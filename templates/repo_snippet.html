@@ -1,0 +1,52 @@
+{{define "repo_snippet.html"}}
+<section>
+    <h1>{{.Repository.Repository}}</h1>
+    <div class="repo-info">
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="label">Repository</span>
+                <span class="value">
+                    <a href="{{.Repository.RepositoryURL}}" target="_blank">{{.Repository.Repository}}</a>
+                </span>
+            </div>
+            <div class="info-item">
+                <span class="label">Default Branch</span>
+                <span class="value">{{.Repository.DefaultBranch}}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Badges Found</span>
+                <span class="value">{{len .Repository.Badges}}</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2>Badges</h2>
+    {{if not .Repository.ReadmeFound}}
+    <p class="muted-text">No README found in this repository. Badges cannot be detected without a README.</p>
+    {{else if .Badges}}
+    <div class="badge-list">
+        {{range .Badges}}
+        <div class="badge-list-item">
+            <a href="{{.TargetURL}}" target="_blank">
+                <img src="{{.ImageURL}}" alt="{{.AltText}}" loading="lazy">
+            </a>
+            <div class="badge-details">
+                <div class="info-item">
+                    <span class="label">Name</span>
+                    <span class="value">{{.Name}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Category</span>
+                    <span class="value">{{.Category}}</span>
+                </div>
+            </div>
+        </div>
+        {{end}}
+    </div>
+    {{else}}
+    <p class="muted-text">No badges detected in this repository's README.</p>
+    {{end}}
+</section>
+{{end}}

@@ -1,0 +1,28 @@
+{{define "index.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badge Indexer - {{.OrgName}}</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.min.js" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <a href="/" hx-get="/snippets/index.html" hx-target="#content" hx-push-url="/"><h1>Badge Indexer - {{.OrgName}}</h1></a>
+    </header>
+    <main id="content">
+        {{template "index_snippet.html" .}}
+    </main>
+    <footer>
+        <p>
+            <a href="https://github.com/UnitVectorY-Labs">UnitVectorY Labs</a> |
+            <a href="https://opensource.org/licenses/MIT">MIT License</a> |
+            <a href="https://github.com/UnitVectorY-Labs/badgeindexer"><strong>badgeindexer</strong> on GitHub</a>
+        </p>
+        <p class="last-updated">Last updated: {{.LastUpdated}}</p>
+    </footer>
+</body>
+</html>
+{{end}}

@@ -1,0 +1,383 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+header {
+    background-color: #3b82f6;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header a {
+    text-decoration: none;
+    color: inherit;
+}
+
+header h1 {
+    color: white;
+    margin: 0;
+    font-size: 1.5em;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+section {
+    background-color: #fff;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 1.5em;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 1.2em;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+h3 {
+    font-size: 1em;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.muted-text {
+    color: #888;
+}
+
+/* Badge Filter Section */
+.badge-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.badge-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.badge-filter:hover {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+}
+
+.badge-filter.selected {
+    border-color: #3b82f6;
+    background-color: #dbeafe;
+}
+
+.badge-filter img {
+    max-height: 20px;
+}
+
+.badge-filter .badge-name {
+    font-size: 0.85em;
+    color: #374151;
+    font-weight: 500;
+}
+
+.badge-category {
+    margin-bottom: 20px;
+}
+
+.badge-category-title {
+    font-size: 0.9em;
+    color: #6b7280;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Search */
+.search-container {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Repo Table */
+.repo-table {
+    margin-top: 15px;
+}
+
+.repo-table-header {
+    display: flex;
+    background-color: #f8f9fa;
+    padding: 12px 0;
+    border-bottom: 2px solid #ddd;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.repo-name-header {
+    flex: 1;
+    padding-left: 10px;
+}
+
+.badge-cell-header {
+    width: 200px;
+    padding-left: 10px;
+}
+
+.repo-badges-header {
+    width: 200px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.repo-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.2s ease;
+}
+
+.repo-row:hover {
+    background-color: #f8f9fa;
+}
+
+.repo-row:last-child {
+    border-bottom: none;
+}
+
+.repo-name-cell {
+    flex: 1;
+    padding-left: 10px;
+}
+
+.repo-name-cell a {
+    font-weight: 500;
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+.repo-name-cell a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.badge-cell {
+    width: 200px;
+    padding-left: 10px;
+}
+
+.badge-cell img {
+    max-height: 20px;
+}
+
+.repo-badges-cell {
+    width: 200px;
+    text-align: right;
+    padding-right: 10px;
+    color: #6c757d;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.repo-row.hidden {
+    display: none;
+}
+
+/* Repo Info Box */
+.repo-info {
+    background-color: #f8fafc;
+    padding: 1.5em;
+    border-radius: 8px;
+    border-left: 4px solid #3b82f6;
+    margin-bottom: 1.5em;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1em;
+    margin-top: 1em;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-weight: 600;
+    color: #1e3a8a;
+    margin-bottom: 0.25em;
+    font-size: 0.9em;
+}
+
+.value {
+    color: #334155;
+    font-size: 1em;
+}
+
+/* Badge Detail Page */
+.badge-pattern {
+    font-family: monospace;
+    font-size: 0.85em;
+    color: #64748b;
+    background: #e2e8f0;
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    display: inline-block;
+    word-break: break-all;
+}
+
+/* Badge list in repo detail */
+.badge-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.badge-list-item {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding: 1em;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border-left: 3px solid #3b82f6;
+}
+
+.badge-list-item img {
+    max-height: 24px;
+}
+
+.badge-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.badge-details .label {
+    font-size: 0.8em;
+}
+
+.badge-details .value {
+    font-size: 0.85em;
+    word-break: break-all;
+}
+
+/* Footer */
+footer {
+    background-color: #2c3e50;
+    color: #9ca3af;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.8em;
+    border-top: 1px solid #e5e7eb;
+    margin-top: auto;
+}
+
+footer p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+footer a {
+    color: #9ca3af;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+footer a:hover {
+    color: #fff;
+}
+
+/* Stats */
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1em;
+    margin-bottom: 1.5em;
+}
+
+.stat-card {
+    background: #f8f9fa;
+    padding: 1em;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2em;
+    font-weight: bold;
+    color: #1e3a8a;
+}
+
+.stat-label {
+    font-size: 0.85em;
+    color: #64748b;
+    margin-top: 0.25em;
+}
+
+@media (max-width: 768px) {
+    main {
+        padding: 15px;
+    }
+    
+    section {
+        padding: 15px;
+    }
+    
+    .badge-filters {
+        flex-direction: column;
+    }
+    
+    .repo-badges-header,
+    .repo-badges-cell {
+        width: 80px;
+    }
+}

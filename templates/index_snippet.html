@@ -1,0 +1,108 @@
+{{define "index_snippet.html"}}
+<section>
+    <div class="summary-stats">
+        <div class="stat-card">
+            <div class="stat-number">{{.TotalRepos}}</div>
+            <div class="stat-label">Repositories</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{.UniqueBadgeCount}}</div>
+            <div class="stat-label">Unique Badges</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{.ReposWithBadges}}</div>
+            <div class="stat-label">With Badges</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{.ReposNoBadges}}</div>
+            <div class="stat-label">No Badges</div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h1>Badges</h1>
+
+    {{range .BadgesByCategory}}
+    <div class="badge-category">
+        <div class="badge-category-title">{{.Name}}</div>
+        <div class="badge-filters">
+            {{range .Badges}}
+            <div class="badge-filter" data-badge-id="{{.ID}}" onclick="toggleBadgeFilter(this)">
+                <a href="/snippets/badges/{{.ID}}.html" hx-get="/snippets/badges/{{.ID}}.html" hx-target="#content" hx-push-url="/badges/{{.ID}}.html" onclick="event.stopPropagation()">
+                    <img src="{{.ImageURL}}" alt="{{.Name}}" loading="lazy">
+                </a>
+                <span class="badge-name">{{.Name}} ({{.Count}})</span>
+            </div>
+            {{end}}
+        </div>
+    </div>
+    {{end}}
+</section>
+
+<section>
+    <h1>Repositories</h1>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search repositories..." onkeyup="filterRepos()">
+    </div>
+
+    <div class="repo-table">
+        <div class="repo-table-header">
+            <div class="repo-name-header">Repository</div>
+            <div class="repo-badges-header">Badges</div>
+        </div>
+        {{range .Repositories}}
+        <div class="repo-row" data-badges="{{range .BadgeIDs}}{{.}} {{end}}" data-name="{{.Name}}">
+            <div class="repo-name-cell">
+                <a href="/snippets/repos/{{.Name | urlize}}.html" hx-get="/snippets/repos/{{.Name | urlize}}.html" hx-target="#content" hx-push-url="/repos/{{.Name | urlize}}.html">{{.Name}}</a>
+            </div>
+            <div class="repo-badges-cell">{{.BadgeCount}}</div>
+        </div>
+        {{end}}
+    </div>
+</section>
+
+<script>
+var selectedBadges = new Set();
+
+function toggleBadgeFilter(el) {
+    var id = el.getAttribute('data-badge-id');
+    if (selectedBadges.has(id)) {
+        selectedBadges.delete(id);
+    } else {
+        selectedBadges.add(id);
+    }
+    el.classList.toggle('selected');
+    applyFilters();
+}
+
+function filterRepos() {
+    applyFilters();
+}
+
+function applyFilters() {
+    var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    var rows = document.querySelectorAll('.repo-row');
+
+    rows.forEach(function(row) {
+        var name = row.getAttribute('data-name').toLowerCase();
+        var badges = row.getAttribute('data-badges').split(' ').filter(Boolean);
+
+        var matchesSearch = name.includes(searchTerm);
+        var matchesBadges = true;
+
+        if (selectedBadges.size > 0) {
+            matchesBadges = !Array.from(selectedBadges).some(function(bid) {
+                return !badges.includes(bid);
+            });
+        }
+
+        if (matchesSearch && matchesBadges) {
+            row.classList.remove('hidden');
+        } else {
+            row.classList.add('hidden');
+        }
+    });
+}
+</script>
+{{end}}
