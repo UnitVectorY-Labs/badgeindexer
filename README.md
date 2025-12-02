@@ -1,3 +1,6 @@
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![Work In Progress](https://img.shields.io/badge/Status-Work%20In%20Progress-yellow)](https://guide.unitvectorylabs.com/bestpractices/status/#work-in-progress)
+ [![Go Report Card](https://goreportcard.com/badge/github.com/UnitVectorY-Labs/badgeindexer)](https://goreportcard.com/report/github.com/UnitVectorY-Labs/badgeindexer)
+
 # badgeindexer
 
 Collects README badges across an organization and generates a structured dashboard with per-repo and per-badge detail pages.
