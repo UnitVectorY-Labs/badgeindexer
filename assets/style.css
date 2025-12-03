@@ -112,6 +112,8 @@ h3 {
 
 .badge-filter img {
     max-height: 20px;
+    display: block;
+    align-self: center;
 }
 
 .badge-filter .badge-name {
