@@ -12,7 +12,7 @@ Collects README badges across an organization and generates a structured dashboa
 Fetches README badges from GitHub repositories:
 
 ```bash
-./badge-indexer -crawl -org <organization> [flags]
+./badgeindexer -crawl -org <organization> [flags]
 ```
 
 Flags:
@@ -27,7 +27,7 @@ Example:
 
 ```bash
 export GITHUB_TOKEN=$(gh auth token)
-./badge-indexer -crawl -org UnitVectorY-Labs
+./badgeindexer -crawl -org UnitVectorY-Labs
 ```
 
 ### Generate Command
@@ -35,7 +35,7 @@ export GITHUB_TOKEN=$(gh auth token)
 Creates static HTML pages from crawl JSON data:
 
 ```bash
-./badge-indexer -generate [flags]
+./badgeindexer -generate [flags]
 ```
 
 Flags:
@@ -45,7 +45,7 @@ Flags:
 Example:
 
 ```bash
-./badge-indexer -generate
+./badgeindexer -generate
 ```
 
 ## Configuration
