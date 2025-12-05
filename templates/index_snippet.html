@@ -54,7 +54,7 @@
         {{range .Repositories}}
         <div class="repo-row" data-badges="{{range .BadgeIDs}}{{.}} {{end}}" data-name="{{.Name}}">
             <div class="repo-name-cell">
-                <a href="/snippets/repos/{{.Name | urlize}}.html" hx-get="/snippets/repos/{{.Name | urlize}}.html" hx-target="#content" hx-push-url="/repos/{{.Name | urlize}}.html">{{.Name}}</a>
+                <a href="/repos/{{.Name | urlize}}.html" hx-get="/snippets/repos/{{.Name | urlize}}.html" hx-target="#content" hx-push-url="/repos/{{.Name | urlize}}.html">{{.Name}}</a>
             </div>
             <div class="repo-badges-cell">{{.BadgeCount}}</div>
         </div>
