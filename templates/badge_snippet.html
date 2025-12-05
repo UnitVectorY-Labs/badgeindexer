@@ -34,7 +34,7 @@
                 </a>
             </div>
             <div class="repo-name-cell">
-                <a href="/snippets/repos/{{.RepoName | urlize}}.html" hx-get="/snippets/repos/{{.RepoName | urlize}}.html" hx-target="#content" hx-push-url="/repos/{{.RepoName | urlize}}.html">{{.RepoName}}</a>
+                <a href="/repos/{{.RepoName | urlize}}.html" hx-get="/snippets/repos/{{.RepoName | urlize}}.html" hx-target="#content" hx-push-url="/repos/{{.RepoName | urlize}}.html">{{.RepoName}}</a>
             </div>
         </div>
         {{end}}

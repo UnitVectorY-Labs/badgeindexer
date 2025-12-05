@@ -29,7 +29,7 @@
         <div class="badge-filters">
             {{range .Badges}}
             <div class="badge-filter" data-badge-id="{{.ID}}" onclick="toggleBadgeFilter(this)">
-                <a href="/snippets/badges/{{.ID}}.html" hx-get="/snippets/badges/{{.ID}}.html" hx-target="#content" hx-push-url="/badges/{{.ID}}.html" onclick="event.stopPropagation()">
+                <a href="/badges/{{.ID}}.html" hx-get="/snippets/badges/{{.ID}}.html" hx-target="#content" hx-push-url="/badges/{{.ID}}.html" onclick="event.stopPropagation()">
                     <img src="{{.ImageURL}}" alt="{{.Name}}" loading="lazy">
                 </a>
                 <span class="badge-name">{{.Name}} ({{.Count}})</span>
