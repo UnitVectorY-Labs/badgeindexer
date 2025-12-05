@@ -277,41 +277,6 @@ h3 {
     word-break: break-all;
 }
 
-/* Badge list in repo detail */
-.badge-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-}
-
-.badge-list-item {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    padding: 1em;
-    background-color: #f8f9fa;
-    border-radius: 6px;
-    border-left: 3px solid #3b82f6;
-}
-
-.badge-list-item img {
-    max-height: 24px;
-}
-
-.badge-details {
-    flex: 1;
-    min-width: 0;
-}
-
-.badge-details .label {
-    font-size: 0.8em;
-}
-
-.badge-details .value {
-    font-size: 0.85em;
-    word-break: break-all;
-}
-
 /* Footer */
 footer {
     background-color: #2c3e50;

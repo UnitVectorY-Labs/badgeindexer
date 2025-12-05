@@ -26,21 +26,20 @@
     {{if not .Repository.ReadmeFound}}
     <p class="muted-text">No README found in this repository. Badges cannot be detected without a README.</p>
     {{else if .Badges}}
-    <div class="badge-list">
+    <div class="repo-table">
+        <div class="repo-table-header">
+            <div class="badge-cell-header">Badge</div>
+            <div class="repo-name-header">Name</div>
+        </div>
         {{range .Badges}}
-        <div class="badge-list-item">
-            <a href="{{.TargetURL}}" target="_blank">
-                <img src="{{.ImageURL}}" alt="{{.AltText}}" loading="lazy">
-            </a>
-            <div class="badge-details">
-                <div class="info-item">
-                    <span class="label">Name</span>
-                    <span class="value">{{.Name}}</span>
-                </div>
-                <div class="info-item">
-                    <span class="label">Category</span>
-                    <span class="value">{{.Category}}</span>
-                </div>
+        <div class="repo-row">
+            <div class="badge-cell">
+                <a href="{{.TargetURL}}" target="_blank">
+                    <img src="{{.ImageURL}}" alt="{{.AltText}}" loading="lazy">
+                </a>
+            </div>
+            <div class="repo-name-cell">
+                <a href="/badges/{{.ID}}.html" hx-get="/snippets/badges/{{.ID}}.html" hx-target="main" hx-push-url="/badges/{{.ID}}.html">{{.Category}}: {{.Name}}</a>
             </div>
         </div>
         {{end}}

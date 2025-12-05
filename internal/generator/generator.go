@@ -107,13 +107,14 @@ func Run(inputDir, outputDir string) error {
 		var repoBadges []RepoBadge
 		for _, b := range repo.Badges {
 			pattern := canonicalizeURL(b.ImageURL, orgName, repo.Repository)
-			name, category, _, _ := lookupBadge(pattern, badgeConfig)
+			name, category, _, id := lookupBadge(pattern, badgeConfig)
 			repoBadges = append(repoBadges, RepoBadge{
 				ImageURL:  b.ImageURL,
 				TargetURL: b.TargetURL,
 				AltText:   b.AltText,
 				Name:      name,
 				Category:  category,
+				ID:        id,
 			})
 		}
 

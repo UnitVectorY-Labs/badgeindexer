@@ -45,6 +45,7 @@ type RepoBadge struct {
 	AltText   string
 	Name      string
 	Category  string
+	ID        string
 }
 
 // RepoPageViewModel is used for individual repository pages.
