@@ -36,7 +36,11 @@ header a {
     color: inherit;
 }
 
-header h1 {
+header a:hover {
+    text-decoration: none; /* prevent underline on header link hover */
+}
+
+header a h1 {
     color: white;
     margin: 0;
     font-size: 1.5em;
