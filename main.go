@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"flag"
 	"fmt"
 	"os"
@@ -8,6 +9,12 @@ import (
 	"github.com/UnitVectorY-Labs/badgeindexer/internal/crawler"
 	"github.com/UnitVectorY-Labs/badgeindexer/internal/generator"
 )
+
+// templateFS embeds all HTML templates from the templates directory.
+//
+//go:embed templates/*.html
+//go:embed templates/style.css
+var templateFS embed.FS
 
 func main() {
 	crawlMode := flag.Bool("crawl", false, "Run the crawler phase")
@@ -47,7 +54,7 @@ func main() {
 	}
 
 	if *genMode {
-		if err := generator.Run(*outputDir, *htmlDir); err != nil {
+		if err := generator.Run(*outputDir, *htmlDir, templateFS); err != nil {
 			fmt.Printf("Generation failed: %v\n", err)
 			os.Exit(1)
 		}

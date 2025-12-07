@@ -48,6 +48,17 @@ Example:
 ./badgeindexer -generate
 ```
 
+#### Development Mode
+
+For development, you can override the embedded templates to load from disk instead. This allows live editing of templates and CSS without rebuilding the binary:
+
+```bash
+export TEMPLATE_PATH=./templates
+./badgeindexer -generate
+```
+
+When `TEMPLATE_PATH` is set, templates and the `style.css` file are loaded from the specified directory instead of the embedded filesystem that is part of the binary.
+
 ## Configuration
 
 ### badges.json

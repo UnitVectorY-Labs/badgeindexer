@@ -2,11 +2,12 @@ package generator
 
 import (
 	"crypto/sha256"
+	"embed"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"html/template"
-	"io"
+	"io/fs"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -19,7 +20,7 @@ import (
 )
 
 // Run executes the generation phase.
-func Run(inputDir, outputDir string) error {
+func Run(inputDir, outputDir string, templateFS embed.FS) error {
 	fmt.Printf("Starting generation from: %s, output to: %s\n", inputDir, outputDir)
 
 	// Ensure output directories exist
@@ -85,7 +86,7 @@ func Run(inputDir, outputDir string) error {
 	funcMap := template.FuncMap{
 		"urlize": normalizeRepoName,
 	}
-	tmpl, err := template.New("").Funcs(funcMap).ParseGlob("templates/*.html")
+	tmpl, err := loadTemplates(funcMap, templateFS)
 	if err != nil {
 		return fmt.Errorf("failed to parse templates: %w", err)
 	}
@@ -186,8 +187,8 @@ func Run(inputDir, outputDir string) error {
 		}
 	}
 
-	// Copy Assets
-	if err := copyFile("assets/style.css", filepath.Join(outputDir, "style.css")); err != nil {
+	// Copy Assets from embedded filesystem
+	if err := copyEmbeddedFile(templateFS, "templates/style.css", filepath.Join(outputDir, "style.css")); err != nil {
 		return fmt.Errorf("failed to copy style.css: %w", err)
 	}
 
@@ -397,21 +398,43 @@ func renderPageWithSnippet(tmpl *template.Template, path, templateName, snippetN
 	return renderTemplate(tmpl, path, templateName, data)
 }
 
-func copyFile(src, dst string) error {
-	sourceFile, err := os.Open(src)
+// loadTemplates loads templates from the embedded filesystem,
+// or from disk if TEMPLATE_PATH environment variable is set (for development).
+func loadTemplates(funcMap template.FuncMap, templateFS embed.FS) (*template.Template, error) {
+	// Dev-time override: load from disk if TEMPLATE_PATH is set
+	if dir := os.Getenv("TEMPLATE_PATH"); dir != "" {
+		fmt.Printf("Loading templates from disk: %s\n", dir)
+		return template.New("").Funcs(funcMap).ParseGlob(filepath.Join(dir, "*.html"))
+	}
+	// Production: load from embedded filesystem
+	return template.New("").Funcs(funcMap).ParseFS(templateFS, "templates/*.html")
+}
+
+// copyEmbeddedFile copies a file from the embedded filesystem to the destination path.
+func copyEmbeddedFile(fsys fs.FS, src, dst string) error {
+	// Dev-time override: copy from disk if TEMPLATE_PATH is set
+	if dir := os.Getenv("TEMPLATE_PATH"); dir != "" {
+		// Extract filename from src path
+		filename := filepath.Base(src)
+		srcPath := filepath.Join(dir, filename)
+		fmt.Printf("Copying asset from disk: %s\n", srcPath)
+		return copyFileFromDisk(srcPath, dst)
+	}
+
+	data, err := fs.ReadFile(fsys, src)
 	if err != nil {
 		return err
 	}
-	defer sourceFile.Close()
+	return os.WriteFile(dst, data, 0644)
+}
 
-	destFile, err := os.Create(dst)
+// copyFileFromDisk copies a file from disk (used for dev-time override).
+func copyFileFromDisk(src, dst string) error {
+	data, err := os.ReadFile(src)
 	if err != nil {
 		return err
 	}
-	defer destFile.Close()
-
-	_, err = io.Copy(destFile, sourceFile)
-	return err
+	return os.WriteFile(dst, data, 0644)
 }
 
 func normalizeRepoName(name string) string {
