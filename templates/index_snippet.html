@@ -33,6 +33,9 @@
                     <img src="{{.ImageURL}}" alt="{{.Name}}" loading="lazy">
                 </a>
                 <span class="badge-name">{{.Name}} ({{.Count}})</span>
+                <button class="badge-filter-invert" onclick="toggleBadgeInvert(event, this)" title="Toggle invert filter (show repos without this badge)">
+                    <span class="invert-icon">≠</span>
+                </button>
             </div>
             {{end}}
         </div>
@@ -64,15 +67,41 @@
 
 <script>
 var selectedBadges = new Set();
+var invertedBadges = new Set();
 
 function toggleBadgeFilter(el) {
     var id = el.getAttribute('data-badge-id');
     if (selectedBadges.has(id)) {
         selectedBadges.delete(id);
+        // When deselecting, also remove from inverted set
+        invertedBadges.delete(id);
+        el.classList.remove('inverted');
     } else {
         selectedBadges.add(id);
     }
     el.classList.toggle('selected');
+    applyFilters();
+}
+
+function toggleBadgeInvert(event, el) {
+    event.stopPropagation();
+    var badgeFilter = el.closest('.badge-filter');
+    var id = badgeFilter.getAttribute('data-badge-id');
+    
+    // Only allow inverting if badge is selected
+    if (!selectedBadges.has(id)) {
+        // Auto-select the badge if not already selected
+        selectedBadges.add(id);
+        badgeFilter.classList.add('selected');
+    }
+    
+    if (invertedBadges.has(id)) {
+        invertedBadges.delete(id);
+        badgeFilter.classList.remove('inverted');
+    } else {
+        invertedBadges.add(id);
+        badgeFilter.classList.add('inverted');
+    }
     applyFilters();
 }
 
@@ -92,8 +121,12 @@ function applyFilters() {
         var matchesBadges = true;
 
         if (selectedBadges.size > 0) {
-            matchesBadges = !Array.from(selectedBadges).some(function(bid) {
-                return !badges.includes(bid);
+            matchesBadges = Array.from(selectedBadges).every(function(bid) {
+                var hasBadge = badges.includes(bid);
+                var isInverted = invertedBadges.has(bid);
+                // If inverted, we want repos that DON'T have the badge
+                // If not inverted, we want repos that DO have the badge
+                return isInverted ? !hasBadge : hasBadge;
             });
         }
 
