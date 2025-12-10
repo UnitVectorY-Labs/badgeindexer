@@ -33,7 +33,7 @@
                     <img src="{{.ImageURL}}" alt="{{.Name}}" loading="lazy">
                 </a>
                 <span class="badge-name">{{.Name}} ({{.Count}})</span>
-                <button class="badge-filter-invert" onclick="toggleBadgeInvert(event, this)" title="Toggle invert filter (show repos without this badge)">
+                <button type="button" class="badge-filter-invert" onclick="toggleBadgeInvert(event, this)" title="Toggle invert filter (show repos without this badge)">
                     <span class="invert-icon">≠</span>
                 </button>
             </div>
