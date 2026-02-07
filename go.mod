@@ -1,6 +1,6 @@
 module github.com/UnitVectorY-Labs/badgeindexer
 
-go 1.25.6 // GOVERSION
+go 1.25.7 // GOVERSION
 
 require (
 	github.com/google/go-github/v57 v57.0.0
