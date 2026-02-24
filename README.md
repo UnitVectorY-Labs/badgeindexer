@@ -20,6 +20,8 @@ Flags:
 - `-private`: Include private repositories (default: public only)
 - `-output <path>`: Directory for JSON output (default: `data`)
 
+Note: Archived repositories are always excluded from crawling, as they cannot be modified and are treated as if they do not exist.
+
 Requirements:
 - `GITHUB_TOKEN` environment variable with a valid GitHub personal access token
 
