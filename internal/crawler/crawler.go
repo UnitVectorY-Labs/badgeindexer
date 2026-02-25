@@ -62,6 +62,16 @@ func Run(orgName, outputDir, token string, includePrivate bool) error {
 		allRepos = publicRepos
 	}
 
+	// Filter out archived repositories
+	activeRepos := make([]*github.Repository, 0, len(allRepos))
+	for _, repo := range allRepos {
+		if !repo.GetArchived() {
+			activeRepos = append(activeRepos, repo)
+		}
+	}
+	fmt.Printf("Filtered to %d non-archived repositories.\n", len(activeRepos))
+	allRepos = activeRepos
+
 	// 2. Worker Pool for fetching READMEs
 	jobs := make(chan *github.Repository, len(allRepos))
 	results := make(chan error, len(allRepos))
