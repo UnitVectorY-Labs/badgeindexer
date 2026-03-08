@@ -2,7 +2,9 @@ package crawler
 
 import (
 	"net/url"
+	"path"
 	"regexp"
+	"strings"
 
 	"github.com/UnitVectorY-Labs/badgeindexer/internal/models"
 	"github.com/yuin/goldmark"
@@ -10,8 +12,12 @@ import (
 	"github.com/yuin/goldmark/text"
 )
 
+type badgeDetector struct {
+	domains map[string]struct{}
+}
+
 // extractBadges parses the README content and returns a list of badges.
-func extractBadges(content []byte) []models.Badge {
+func extractBadges(content []byte, detector badgeDetector) []models.Badge {
 	var badges []models.Badge
 
 	// 1. Parse Markdown AST
@@ -34,6 +40,9 @@ func extractBadges(content []byte) []models.Badge {
 						ImageURL:  string(img.Destination),
 						TargetURL: string(link.Destination),
 					}
+					if !detector.isBadgeCandidate(badge) {
+						continue
+					}
 					normalizeBadge(&badge)
 					badges = append(badges, badge)
 				}
@@ -52,6 +61,9 @@ func extractBadges(content []byte) []models.Badge {
 			ImageURL:  string(match[2]),
 			AltText:   string(match[3]),
 		}
+		if !detector.isBadgeCandidate(badge) {
+			continue
+		}
 		normalizeBadge(&badge)
 
 		badges = append(badges, badge)
@@ -67,4 +79,49 @@ func normalizeBadge(b *models.Badge) {
 	if u, err := url.Parse(b.TargetURL); err == nil {
 		b.HostTarget = u.Host
 	}
+}
+
+func (d badgeDetector) isBadgeCandidate(badge models.Badge) bool {
+	imageURL := strings.ToLower(badge.ImageURL)
+	targetURL := strings.ToLower(badge.TargetURL)
+	imageHost := strings.ToLower(hostOfURL(badge.ImageURL))
+
+	if strings.Contains(imageURL, "badge") || strings.Contains(targetURL, "badge") {
+		return true
+	}
+
+	if _, ok := d.domains[imageHost]; ok {
+		return true
+	}
+
+	imagePath := badgePath(badge.ImageURL)
+	if strings.Contains(strings.ToLower(path.Base(imagePath)), "badge") {
+		return true
+	}
+
+	return false
+}
+
+func badgePath(raw string) string {
+	u, err := url.Parse(raw)
+	if err != nil || u.Path == "" {
+		return raw
+	}
+	return u.Path
+}
+
+func isRemoteURL(raw string) bool {
+	u, err := url.Parse(raw)
+	if err != nil {
+		return false
+	}
+	return u.Scheme == "http" || u.Scheme == "https"
+}
+
+func hostOfURL(raw string) string {
+	u, err := url.Parse(raw)
+	if err != nil {
+		return ""
+	}
+	return u.Host
 }

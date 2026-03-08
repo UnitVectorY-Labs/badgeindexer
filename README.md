@@ -25,6 +25,11 @@ Note: Archived repositories are always excluded from crawling, as they cannot be
 Requirements:
 - `GITHUB_TOKEN` environment variable with a valid GitHub personal access token
 
+Badge detection behavior:
+- Linked images are treated as badges when the image URL, target URL, or image filename contains `badge`
+- Linked images are also treated as badges when the image host appears in `badge-domains.yaml`
+- The badge domain list is embedded into the binary through Go's `embed.FS`, so crawl behavior is consistent at runtime without requiring an external file next to the executable
+
 Example:
 
 ```bash
@@ -62,6 +67,19 @@ export TEMPLATE_PATH=./templates
 When `TEMPLATE_PATH` is set, templates and the `style.css` file are loaded from the specified directory instead of the embedded filesystem that is part of the binary.
 
 ## Configuration
+
+### badge-domains.yaml
+
+`badge-domains.yaml` lives at the repository root and defines image hostnames that should always be considered badge providers during crawl. This file is embedded into the binary and loaded from the virtual filesystem at startup.
+
+```yaml
+domains:
+  - img.shields.io
+  - goreportcard.com
+  - codecov.io
+```
+
+If a linked image does not come from one of these configured hosts, it must still include `badge` in the image URL, target URL, or filename to be treated as a badge. This prevents normal linked screenshots and other README images from being misclassified.
 
 ### badges.json
 
