@@ -10,11 +10,12 @@ import (
 	"github.com/UnitVectorY-Labs/badgeindexer/internal/generator"
 )
 
-// templateFS embeds all HTML templates from the templates directory.
+// appFS embeds templates, assets, and crawler configuration files.
 //
+//go:embed badge-domains.yaml
 //go:embed templates/*.html
 //go:embed templates/style.css
-var templateFS embed.FS
+var appFS embed.FS
 
 func main() {
 	crawlMode := flag.Bool("crawl", false, "Run the crawler phase")
@@ -47,14 +48,19 @@ func main() {
 			fmt.Println("Error: GITHUB_TOKEN environment variable is required for crawl mode.")
 			os.Exit(1)
 		}
-		if err := crawler.Run(*orgName, *outputDir, token, *includePrivate); err != nil {
+		badgeDomains, err := crawler.LoadBadgeDomains(appFS, "badge-domains.yaml")
+		if err != nil {
+			fmt.Printf("Failed to load badge domains: %v\n", err)
+			os.Exit(1)
+		}
+		if err := crawler.Run(*orgName, *outputDir, token, *includePrivate, badgeDomains); err != nil {
 			fmt.Printf("Crawl failed: %v\n", err)
 			os.Exit(1)
 		}
 	}
 
 	if *genMode {
-		if err := generator.Run(*outputDir, *htmlDir, templateFS); err != nil {
+		if err := generator.Run(*outputDir, *htmlDir, appFS); err != nil {
 			fmt.Printf("Generation failed: %v\n", err)
 			os.Exit(1)
 		}

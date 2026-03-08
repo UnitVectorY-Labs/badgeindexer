@@ -18,7 +18,7 @@ import (
 const DefaultWorkerCount = 10
 
 // Run executes the crawl phase.
-func Run(orgName, outputDir, token string, includePrivate bool) error {
+func Run(orgName, outputDir, token string, includePrivate bool, badgeDomains map[string]struct{}) error {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},
@@ -84,7 +84,7 @@ func Run(orgName, outputDir, token string, includePrivate bool) error {
 		go func() {
 			defer wg.Done()
 			for repo := range jobs {
-				results <- processRepo(ctx, client, repo, outputDir)
+				results <- processRepo(ctx, client, repo, outputDir, badgeDomains)
 			}
 		}()
 	}
@@ -127,7 +127,7 @@ func Run(orgName, outputDir, token string, includePrivate bool) error {
 	return nil
 }
 
-func processRepo(ctx context.Context, client *github.Client, repo *github.Repository, outputDir string) error {
+func processRepo(ctx context.Context, client *github.Client, repo *github.Repository, outputDir string, badgeDomains map[string]struct{}) error {
 	repoName := repo.GetName()
 	defaultBranch := repo.GetDefaultBranch()
 
@@ -144,7 +144,7 @@ func processRepo(ctx context.Context, client *github.Client, repo *github.Reposi
 		if err != nil {
 			return fmt.Errorf("failed to decode readme for %s: %w", repoName, err)
 		}
-		badges = extractBadges([]byte(contentStr))
+		badges = extractBadges([]byte(contentStr), badgeDetector{domains: badgeDomains})
 	}
 
 	data := models.RepositoryData{
