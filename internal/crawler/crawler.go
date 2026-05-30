@@ -79,14 +79,12 @@ func Run(orgName, outputDir, token string, includePrivate bool, badgeDomains map
 
 	// Concurrency limit
 	workerCount := DefaultWorkerCount
-	for i := 0; i < workerCount; i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
+	for range workerCount {
+		wg.Go(func() {
 			for repo := range jobs {
 				results <- processRepo(ctx, client, repo, outputDir, badgeDomains)
 			}
-		}()
+		})
 	}
 
 	for _, repo := range allRepos {

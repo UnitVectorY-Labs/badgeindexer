@@ -384,7 +384,7 @@ func canonicalizeURL(rawURL, org, repo string) string {
 	return result
 }
 
-func renderTemplate(tmpl *template.Template, path, name string, data interface{}) error {
+func renderTemplate(tmpl *template.Template, path, name string, data any) error {
 	file, err := os.Create(path)
 	if err != nil {
 		return fmt.Errorf("failed to create %s: %w", path, err)
@@ -394,7 +394,7 @@ func renderTemplate(tmpl *template.Template, path, name string, data interface{}
 }
 
 // renderPageWithSnippet renders a full page using a template that extends base.html
-func renderPageWithSnippet(tmpl *template.Template, path, templateName, snippetName string, data interface{}) error {
+func renderPageWithSnippet(tmpl *template.Template, path, templateName, snippetName string, data any) error {
 	return renderTemplate(tmpl, path, templateName, data)
 }
 
