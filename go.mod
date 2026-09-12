@@ -4,7 +4,7 @@ go 1.27.0 // GOVERSION
 
 require (
 	github.com/google/go-github/v57 v57.0.0
-	github.com/yuin/goldmark v1.8.5
+	github.com/yuin/goldmark v1.8.6
 	golang.org/x/oauth2 v0.37.0
 	gopkg.in/yaml.v3 v3.0.1
 )
