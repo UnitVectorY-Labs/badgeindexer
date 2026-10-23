@@ -16,3 +16,4 @@ config:
       "data",
       "output"
     ]
+  osv: sarif
