@@ -1,6 +1,6 @@
 # UVY Design adoption
 
-Pinned to [UVY Design v0.1.0](https://github.com/UnitVectorY-Labs/uvy-design/releases/tag/v0.1.0), source commit `396a65021c2bcab8dbcb3d1bb4cb498c807a4396`. Nothing is fetched from the design repository at runtime.
+Pinned to [UVY Design v0.1.0](https://github.com/UnitVectorY-Labs/uvy-design/tree/12f8e3d964785d78628346516351fe4dac583cef), source commit `12f8e3d964785d78628346516351fe4dac583cef`. Nothing is fetched from the design repository at runtime.
 
 ## Copied files
 
