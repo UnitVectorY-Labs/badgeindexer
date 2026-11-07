@@ -46,6 +46,14 @@ func TestGeneratedSiteAssetsAndFragments(t *testing.T) {
 				t.Errorf("%s contains %s", path, forbidden)
 			}
 		}
+		for _, required := range []string{`src="/htmx-4.0.0.min.js"`, `data-uvy-theme-toggle hidden aria-label="Switch to dark mode"`, `aria-hidden="true" focusable="false"`, `hx-get="/snippets/index.html"`} {
+			if !strings.Contains(s, required) {
+				t.Errorf("%s missing %s", path, required)
+			}
+		}
+		if strings.Contains(s, `<script src="http`) {
+			t.Errorf("%s loads a remote script", path)
+		}
 		theme, tokens, style, toggle, main := strings.Index(s, "/uvy-theme.js"), strings.Index(s, "/uvy-tokens.css"), strings.Index(s, "/style.css"), strings.Index(s, "data-uvy-theme-toggle"), strings.Index(s, `<main id="content">`)
 		if theme < 0 || !(theme < tokens && tokens < style && toggle < main && toggle > 0) {
 			t.Errorf("asset order or toggle placement in %s", path)

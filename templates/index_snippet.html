@@ -68,18 +68,6 @@
 <script>
 var selectedBadges = new Set();
 var invertedBadges = new Set();
-try {
-    var savedFilters = JSON.parse(sessionStorage.getItem('badgeindexer-filters') || '{}');
-    selectedBadges = new Set(savedFilters.selected || []);
-    invertedBadges = new Set(savedFilters.inverted || []);
-    document.getElementById('searchInput').value = savedFilters.search || '';
-} catch (_) { /* Filtering remains available when storage is blocked. */ }
-document.querySelectorAll('.badge-filter').forEach(function(el) {
-    var id = el.getAttribute('data-badge-id');
-    el.classList.toggle('selected', selectedBadges.has(id));
-    el.classList.toggle('inverted', invertedBadges.has(id));
-});
-applyFilters();
 
 function toggleBadgeFilter(el) {
     var id = el.getAttribute('data-badge-id');
@@ -123,7 +111,6 @@ function filterRepos() {
 
 function applyFilters() {
     var searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    try { sessionStorage.setItem('badgeindexer-filters', JSON.stringify({selected: Array.from(selectedBadges), inverted: Array.from(invertedBadges), search: document.getElementById('searchInput').value})); } catch (_) {}
     var rows = document.querySelectorAll('.repo-row');
 
     rows.forEach(function(row) {
