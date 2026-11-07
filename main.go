@@ -14,7 +14,7 @@ import (
 //
 //go:embed badge-domains.yaml
 //go:embed templates/*.html
-//go:embed templates/style.css
+//go:embed templates/style.css templates/uvy-tokens.css templates/uvy-theme.js templates/htmx-4.0.0.min.js
 var appFS embed.FS
 
 func main() {

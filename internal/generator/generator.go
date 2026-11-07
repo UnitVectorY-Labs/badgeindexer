@@ -188,8 +188,10 @@ func Run(inputDir, outputDir string, templateFS embed.FS) error {
 	}
 
 	// Copy Assets from embedded filesystem
-	if err := copyEmbeddedFile(templateFS, "templates/style.css", filepath.Join(outputDir, "style.css")); err != nil {
-		return fmt.Errorf("failed to copy style.css: %w", err)
+	for _, name := range []string{"style.css", "uvy-tokens.css", "uvy-theme.js", "htmx-4.0.0.min.js"} {
+		if err := copyEmbeddedFile(templateFS, "templates/"+name, filepath.Join(outputDir, name)); err != nil {
+			return fmt.Errorf("failed to copy %s: %w", name, err)
+		}
 	}
 
 	fmt.Println("Generation complete.")
