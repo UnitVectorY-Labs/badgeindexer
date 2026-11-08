@@ -1,6 +1,6 @@
 # UVY Design adoption
 
-The interface follows the current [UVY Design guidance](https://github.com/UnitVectorY-Labs/uvy-design) (reviewed at commit `64017af`). The guidance is a human-readable reference, not a versioned dependency. BadgeIndexer owns its implementation and serves interface assets locally.
+The interface follows the current [UVY Design guidance](https://github.com/UnitVectorY-Labs/uvy-design) (reviewed at commit `5f8bd54`). The guidance is a human-readable reference, not a versioned dependency. BadgeIndexer owns its implementation and serves interface assets locally.
 
 The project title and organization subtitle identify the application and its data scope. The theme toggle follows the operating system until a choice is saved in the `uvy-theme` cookie. The dashboard, filtering, repository and badge pages, HTMX navigation, and footer retain their established behavior.
 
