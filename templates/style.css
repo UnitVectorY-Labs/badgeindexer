@@ -3,18 +3,19 @@ body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; font
 a { color: var(--uvy-link); text-decoration: none; }
 a:hover { text-decoration: underline; }
 :focus-visible { outline: 3px solid var(--uvy-focus); outline-offset: 3px; }
-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px max(16px, calc((100% - 1400px)/2)); color: var(--uvy-on-masthead); background: var(--uvy-masthead); border-bottom: 4px solid var(--uvy-accent-fill); }
-header a { color: inherit; min-width: 0; }
-header h1 { color: inherit; margin: 0; font-size: 26px; line-height: 1.25; overflow-wrap: anywhere; }
-header :focus-visible { outline-color: white; }
-[data-uvy-theme-toggle] { flex: none; display: grid; place-items: center; width: 44px; height: 44px; padding: 8px; color: white; background: transparent; border: 1px solid white; border-radius: 6px; cursor: pointer; }
+header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px max(24px, calc((100% - 1352px)/2)); background: var(--uvy-surface); border-bottom: 1px solid var(--uvy-divider); }
+.site-title { min-width: 0; }
+header h1 { margin: 0; font-size: 26px; }
+header p { margin: 4px 0 0; color: var(--uvy-muted); overflow-wrap: anywhere; }
+[data-uvy-theme-toggle] { flex: none; display: grid; place-items: center; width: 44px; height: 44px; padding: 8px; color: var(--uvy-link); background: var(--uvy-surface); border: 1px solid var(--uvy-control); border-radius: 6px; cursor: pointer; }
 [data-uvy-theme-toggle][hidden] { display: none; }
-[data-uvy-theme-toggle]:hover { background: rgb(255 255 255 / 15%); }
+[data-uvy-theme-toggle]:hover { background: var(--uvy-blue-soft); }
 [data-uvy-theme-toggle] svg { display: block; width: 20px; height: 20px; }
 [data-theme="dark"] .uvy-theme-dark-icon, :root:not([data-theme="dark"]) .uvy-theme-light-icon { display: none; }
 main { flex: 1; padding: 24px; max-width: 1400px; margin: 0 auto; width: 100%; min-width: 0; }
 section { background: var(--uvy-surface); padding: 24px; margin-bottom: 24px; border: 1px solid var(--uvy-divider); border-radius: 8px; box-shadow: var(--uvy-shadow); }
-h1, h2, h3 { line-height: 1.3; margin: 0 0 16px; overflow-wrap: anywhere; }
+h1, h2, h3 { color: var(--uvy-link); line-height: 1.3; margin: 0 0 16px; overflow-wrap: anywhere; }
+h1::after, h2::after, h3::after { content: ""; display: block; width: 48px; max-width: 100%; height: 3px; margin-top: 6px; background: var(--uvy-accent-fill); }
 h1 { font-size: 28px; } h2 { font-size: 18px; } h3 { font-size: 16px; }
 .muted-text { color: var(--uvy-muted); }
 .badge-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
@@ -41,7 +42,7 @@ h1 { font-size: 28px; } h2 { font-size: 18px; } h3 { font-size: 16px; }
 .badge-cell-header, .badge-cell { width: 200px; flex: 0 1 200px; min-width: 0; }
 .repo-badges-header, .repo-badges-cell { width: 200px; flex: 0 1 200px; text-align: right; }
 .repo-badges-cell { color: var(--uvy-muted); font-variant-numeric: tabular-nums; }
-.repo-info { background: var(--uvy-blue-soft); padding: 16px; border-radius: 8px; border-left: 4px solid var(--uvy-link); }
+.repo-info { background: var(--uvy-blue-soft); padding: 16px; border-radius: 8px; border: 1px solid var(--uvy-divider); }
 .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 16px; }
 .info-item { display: flex; flex-direction: column; min-width: 0; overflow-wrap: anywhere; }
 .label { font-size: 14px; font-weight: 600; color: var(--uvy-muted); margin-bottom: 4px; }
