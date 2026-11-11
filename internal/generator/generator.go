@@ -4,7 +4,7 @@ import (
 	"crypto/sha256"
 	"embed"
 	"encoding/hex"
-	"encoding/json"
+	"encoding/json/v2"
 	"fmt"
 	"html/template"
 	"io/fs"
@@ -61,7 +61,7 @@ func Run(inputDir, outputDir string, templateFS embed.FS) error {
 		}
 
 		var repo models.RepositoryData
-		if err := json.NewDecoder(file).Decode(&repo); err != nil {
+		if err := json.UnmarshalRead(file, &repo); err != nil {
 			file.Close()
 			return fmt.Errorf("failed to decode %s: %w", f, err)
 		}
@@ -323,7 +323,7 @@ func loadBadgeConfig(path string) *BadgeConfig {
 	defer file.Close()
 
 	var config BadgeConfig
-	if err := json.NewDecoder(file).Decode(&config); err != nil {
+	if err := json.UnmarshalRead(file, &config); err != nil {
 		return &BadgeConfig{}
 	}
 	return &config
@@ -456,7 +456,7 @@ func loadTimestamp(inputDir string) string {
 	defer file.Close()
 
 	var data map[string]string
-	if err := json.NewDecoder(file).Decode(&data); err != nil {
+	if err := json.UnmarshalRead(file, &data); err != nil {
 		return "Unknown"
 	}
 
