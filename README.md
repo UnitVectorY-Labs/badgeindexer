@@ -133,3 +133,10 @@ Each repository creates a JSON file in the output directory:
 ```
 
 A `timestamp.json` file records the last crawl time.
+
+JSON uses Go's v2 defaults: repositories with no badges are written with
+`"badges": []` (older crawl files may contain `null`), and output is indented
+without a final newline. JSON input must contain one complete value, use valid
+UTF-8, and contain no duplicate object names. Field names are case-sensitive.
+Invalid repository files stop generation; invalid badge configuration or
+timestamp files fall back to the existing empty configuration or unknown time.
