@@ -5,12 +5,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Badge Indexer - {{.OrgName}}</title>
+    <script>
+(() => {
+  if (window.__uvyThemeInitialized) return;
+  window.__uvyThemeInitialized = true;
+  const root = document.documentElement;
+  const selector = '[data-uvy-theme-toggle], #theme-toggle';
+  const system = matchMedia('(prefers-color-scheme: dark)');
+  let preference = null;
+  try {
+    const cookie = document.cookie.split('; ').find(value => value.startsWith('uvy-theme='));
+    const saved = cookie?.slice('uvy-theme='.length);
+    if (saved === 'light' || saved === 'dark') preference = saved;
+  } catch {}
+  const sync = () => {
+    const dark = preference ? preference === 'dark' : system.matches;
+    root.dataset.theme = dark ? 'dark' : 'light';
+    root.style.colorScheme = dark ? 'dark' : 'light';
+    document.querySelectorAll(selector).forEach(button => {
+      button.hidden = false;
+      button.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+      button.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+    });
+  };
+  sync();
+  system.addEventListener('change', () => { if (!preference) sync(); });
+  document.addEventListener('click', event => {
+    if (!(event.target instanceof Element) || !event.target.closest(selector)) return;
+    preference = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    try {
+      document.cookie = `uvy-theme=${preference}; Path=/; Max-Age=31536000; SameSite=Lax${location.protocol === 'https:' ? '; Secure' : ''}`;
+    } catch {}
+    sync();
+  });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sync, { once: true });
+  else sync();
+  document.addEventListener('htmx:after:swap', sync);
+  document.addEventListener('htmx:afterSwap', sync);
+})();
+    </script>
     <link rel="stylesheet" href="/style.css">
     <script src="https://unpkg.com/htmx.org@4.0.0/dist/htmx.min.js" integrity="sha384-BvJpBiO8Kh31EqtJe5DRIeWrHWnCGkwytKs9NKFi86Hhw96dEqdEMzZDeK9iEGTc" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
-        <a href="/" hx-get="/snippets/index.html" hx-target="#content" hx-push-url="/"><h1>Badge Indexer - {{.OrgName}}</h1></a>
+        <div class="site-title"><a href="/" hx-get="/snippets/index.html" hx-target="#content" hx-push-url="/"><h1>Badge Indexer</h1></a><p>{{.OrgName}}</p></div>
+        <button type="button" data-uvy-theme-toggle hidden aria-label="Switch to dark mode"><span class="uvy-theme-dark-icon"><svg aria-hidden="true" focusable="false"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008" />
+</svg></span><span class="uvy-theme-light-icon"><svg aria-hidden="true" focusable="false"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+  <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
+</svg></span></button>
     </header>
     <main id="content">
 {{block "content" .}}{{end}}
