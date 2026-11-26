@@ -2,7 +2,8 @@ package crawler
 
 import (
 	"context"
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -116,9 +117,7 @@ func Run(orgName, outputDir, token string, includePrivate bool, badgeDomains map
 	}
 	defer tsFile.Close()
 
-	tsEncoder := json.NewEncoder(tsFile)
-	tsEncoder.SetIndent("", "  ")
-	if err := tsEncoder.Encode(timestampData); err != nil {
+	if err := json.MarshalWrite(tsFile, timestampData, jsontext.WithIndent("  ")); err != nil {
 		return fmt.Errorf("failed to encode timestamp.json: %w", err)
 	}
 
@@ -161,9 +160,7 @@ func processRepo(ctx context.Context, client *github.Client, repo *github.Reposi
 	}
 	defer file.Close()
 
-	encoder := json.NewEncoder(file)
-	encoder.SetIndent("", "  ")
-	return encoder.Encode(data)
+	return json.MarshalWrite(file, data, jsontext.WithIndent("  "))
 }
 
 func normalizeRepoName(name string) string {
